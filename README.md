@@ -13,8 +13,8 @@ glue (manifest, Dockerfile, start script, description, changelog).
 cloudron build
 ```
 
-To override the upstream ref being built (default is a pinned commit on
-slint-ui/main):
+To override the upstream ref being built (default is the
+`urlaubsverwaltung-5.9.2` tag on the slint-ui fork):
 
 ```sh
 cloudron build --build-arg UV_REF=<commit-sha-or-branch-or-tag>
