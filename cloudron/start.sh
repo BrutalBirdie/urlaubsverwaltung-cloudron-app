@@ -6,7 +6,7 @@ echo "==> Starting Urlaubsverwaltung on Cloudron"
 # ---------------------------------------------------------------------------
 # Persistent data directories (survive app restarts via /app/data volume).
 # ---------------------------------------------------------------------------
-mkdir -p /app/data/backups /app/data/logs
+mkdir -p /app/data/logs
 chown -R cloudron:cloudron /app/data
 
 # ---------------------------------------------------------------------------
@@ -52,9 +52,13 @@ export SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI="${CLOUDRON_OIDC_ISS
 # ---------------------------------------------------------------------------
 # Persistent paths and server config
 # ---------------------------------------------------------------------------
-export UV_BACKUP_BACKUP_CONFIGURATION_FILESYSTEM_BACKUPPATH="/app/data/backups/"
 export LOGGING_FILE_NAME="/app/data/logs/urlaubsverwaltung.log"
 export SERVER_PORT=8080
+
+# Expose /actuator/health/{readiness,liveness}. Spring Boot only auto-enables
+# these when it detects Kubernetes; Cloudron's health check hits the
+# readiness probe directly (see CloudronManifest.json#healthCheckPath).
+export MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED=true
 
 # Honor X-Forwarded-* headers from Cloudron's reverse proxy so that Spring
 # constructs absolute URLs (incl. the OAuth2 redirect URI) using the public

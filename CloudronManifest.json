@@ -6,7 +6,7 @@
     "changelog": "file://cloudron/CHANGELOG",
     "tagline": "Web-based vacation and absence management for teams.",
     "version": "0.1.0",
-    "upstreamVersion": "6.0.0-M3",
+    "upstreamVersion": "5.9.2",
     "healthCheckPath": "/actuator/health/readiness",
     "httpPort": 8080,
     "memoryLimit": 1610612736,
