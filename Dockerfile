@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.7
-
 # ---------------------------------------------------------------------------
 # Builder: clone the slint-ui fork at a pinned ref and build the fat jar.
 # Override the ref at build time:
@@ -24,8 +22,7 @@ RUN git init . \
  && git checkout --detach FETCH_HEAD \
  && git rev-parse HEAD > /build/.uv-commit
 
-RUN --mount=type=cache,target=/root/.m2/repository \
-    ./mvnw -B -ntp -DskipTests clean package \
+RUN ./mvnw -B -ntp -DskipTests clean package \
  && cp target/urlaubsverwaltung-*.jar /tmp/urlaubsverwaltung.jar
 
 # ---------------------------------------------------------------------------
