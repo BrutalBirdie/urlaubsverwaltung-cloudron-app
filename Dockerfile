@@ -6,7 +6,7 @@
 FROM eclipse-temurin:21-jdk-noble AS builder
 
 ARG UV_REPO=https://github.com/slint-ui/urlaubsverwaltung.git
-ARG UV_REF=urlaubsverwaltung-5.9.2
+ARG UV_REF=urlaubsverwaltung-5.9.2-plus
 
 ENV MAVEN_OPTS="-Dmaven.repo.local=/root/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
