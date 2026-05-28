@@ -58,8 +58,10 @@ export SERVER_PORT=8080
 # ---------------------------------------------------------------------------
 # Disable springdoc and swagger ui
 # ---------------------------------------------------------------------------
-export SPRINGDOC_API_DOCS_ENABLED=false
-export SPRINGDOC_SWAGGER_UI_ENABLED=false
+# log prints springdoc.api-docs.enabled=false and springdoc.swagger-ui.enabled=false but can't just export these
+# will need to look into that
+# export SPRINGDOC_API_DOCS_ENABLED=false
+# export SPRINGDOC_SWAGGER_UI_ENABLED=false
 
 # Expose /actuator/health/{readiness,liveness}. Spring Boot only auto-enables
 # these when it detects Kubernetes; Cloudron's health check hits the
