@@ -2,3 +2,7 @@
 * Initial Cloudron packaging of Urlaubsverwaltung
 * PostgreSQL, Sendmail and OIDC addons wired up
 * Logs and backups persisted under /app/data
+
+[1.0.0]
+* Updated to Urlaubsverwaltung 6.0.0-M5
+* Copy the jar directly instead of building from source

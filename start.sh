@@ -55,6 +55,12 @@ export SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI="${CLOUDRON_OIDC_ISS
 export LOGGING_FILE_NAME="/app/data/logs/urlaubsverwaltung.log"
 export SERVER_PORT=8080
 
+# ---------------------------------------------------------------------------
+# Disable springdoc and swagger ui
+# ---------------------------------------------------------------------------
+export SPRINGDOC_API_DOCS_ENABLED=false
+export SPRINGDOC_SWAGGER_UI_ENABLED=false
+
 # Expose /actuator/health/{readiness,liveness}. Spring Boot only auto-enables
 # these when it detects Kubernetes; Cloudron's health check hits the
 # readiness probe directly (see CloudronManifest.json#healthCheckPath).

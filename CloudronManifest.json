@@ -1,35 +1,50 @@
 {
-    "id": "org.synyx.urlaubsverwaltung.cloudronapp",
-    "title": "Urlaubsverwaltung",
-    "author": "Urlaubsverwaltung Contributors",
-    "description": "file://cloudron/DESCRIPTION.md",
-    "changelog": "file://cloudron/CHANGELOG",
-    "tagline": "Web-based vacation and absence management for teams.",
-    "version": "0.1.0",
-    "upstreamVersion": "5.9.2",
-    "healthCheckPath": "/actuator/health/readiness",
-    "httpPort": 8080,
-    "memoryLimit": 1610612736,
-    "manifestVersion": 2,
-    "website": "https://urlaubsverwaltung.cloud",
-    "documentationUrl": "https://github.com/urlaubsverwaltung/urlaubsverwaltung/blob/main/README.md",
-    "contactEmail": "info@urlaubsverwaltung.cloud",
-    "tags": [
-        "hr",
-        "vacation",
-        "leave",
-        "absence",
-        "team"
-    ],
-    "minBoxVersion": "7.0.0",
-    "addons": {
-        "localstorage": {},
-        "postgresql": {},
-        "sendmail": {
-            "supportsDisplayName": true
-        },
-        "oidc": {
-            "loginRedirectUri": "/login/oauth2/code/default"
-        }
+  "id": "org.synyx.urlaubsverwaltung.cloudronapp",
+  "title": "Urlaubsverwaltung",
+  "author": "Urlaubsverwaltung Contributors",
+  "description": "file://DESCRIPTION.md",
+  "changelog": "file://CHANGELOG",
+  "tagline": "Web-based vacation and absence management for teams.",
+  "version": "1.0.0",
+  "upstreamVersion": "6.0.0-M5",
+  "healthCheckPath": "/actuator/health/readiness",
+  "httpPort": 8080,
+  "memoryLimit": 1610612736,
+  "manifestVersion": 2,
+  "website": "https://urlaubsverwaltung.cloud",
+  "documentationUrl": "https://github.com/urlaubsverwaltung/urlaubsverwaltung/blob/main/README.md",
+  "contactEmail": "info@urlaubsverwaltung.cloud",
+  "tags": [
+    "hr",
+    "vacation",
+    "leave",
+    "absence",
+    "team"
+  ],
+  "minBoxVersion": "9.1.0",
+  "addons": {
+    "localstorage": {},
+    "postgresql": {},
+    "sendmail": {
+      "supportsDisplayName": true
+    },
+    "oidc": {
+      "loginRedirectUri": "/login/oauth2/code/default"
     }
+  },
+  "iconUrl": "https://urlaubsverwaltung.cloud/static/favicons/android-chrome-192x192.png",
+  "icon": "file://logo.png",
+  "packagerName": "James Smith",
+  "packagerUrl": "https://forum.cloudron.io",
+  "postInstallMessage": "file://POSTINSTALL.md",
+  "mediaLinks": [
+    "https://urlaubsverwaltung.cloud/FHh_4tyA4N-1220.avif",
+    "https://urlaubsverwaltung.cloud/8p5RwH3Dkz-3072.avif",
+    "https://urlaubsverwaltung.cloud/YcMu8iy5hO-864.avif",
+    "https://urlaubsverwaltung.cloud/7YQj50r9Zl-1204.avif",
+    "https://urlaubsverwaltung.cloud/5sEW4zuBOs-1172.avif",
+    "https://urlaubsverwaltung.cloud/iIXgc6URWI-1172.avif",
+    "https://urlaubsverwaltung.cloud/zsnXcTUhZR-1000.avif",
+    "https://urlaubsverwaltung.cloud/YGzFGMa7z4-1440.avif"
+  ]
 }

@@ -1,39 +1,13 @@
-# ---------------------------------------------------------------------------
-# Builder: clone the slint-ui fork at a pinned ref and build the fat jar.
-# Override the ref at build time:
-#     cloudron build --build-arg UV_REF=<sha-or-branch-or-tag>
-# ---------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk-noble AS builder
-
-ARG UV_REPO=https://github.com/slint-ui/urlaubsverwaltung.git
-ARG UV_REF=urlaubsverwaltung-5.9.2-plus
-
-ENV MAVEN_OPTS="-Dmaven.repo.local=/root/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-
-RUN apt-get update \
- && apt-get install -y --no-install-recommends git ca-certificates \
- && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /build
-
-RUN git init . \
- && git remote add origin "${UV_REPO}" \
- && git -c protocol.version=2 fetch --depth 1 origin "${UV_REF}" \
- && git checkout --detach FETCH_HEAD \
- && git rev-parse HEAD > /build/.uv-commit
-
-RUN ./mvnw -B -ntp -DskipTests clean package \
- && cp target/urlaubsverwaltung-*.jar /tmp/urlaubsverwaltung.jar
-
-# ---------------------------------------------------------------------------
-# Runtime: Cloudron base + Liberica JDK 21 (matches upstream .tool-versions).
-# ---------------------------------------------------------------------------
 FROM cloudron/base:5.0.0
 
-ENV LIBERICA_VERSION=21.0.3+10 \
-    JAVA_HOME=/opt/jdk-21 \
-    PATH=/opt/jdk-21/bin:$PATH
+# renovate: datasource=github-releases depName=urlaubsverwaltung/urlaubsverwaltung
+ARG URLAUBSVERWALTUNG_VERSION=6.0.0-M5
 
+ENV JAVA_HOME=/opt/jdk \
+    PATH=/opt/jdk/bin:$PATH
+
+# Resolve the Liberica JDK version from upstream's .tool-versions at the pinned
+# release tag, so the runtime JDK always matches what upstream tests against.
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
     case "$arch" in \
@@ -41,21 +15,25 @@ RUN set -eux; \
       arm64) liberica_arch=aarch64 ;; \
       *) echo "unsupported arch: $arch" >&2; exit 1 ;; \
     esac; \
-    url="https://download.bell-sw.com/java/${LIBERICA_VERSION}/bellsoft-jdk${LIBERICA_VERSION}-linux-${liberica_arch}.tar.gz"; \
+    tool_versions_url="https://raw.githubusercontent.com/urlaubsverwaltung/urlaubsverwaltung/urlaubsverwaltung-${URLAUBSVERWALTUNG_VERSION}/.tool-versions"; \
+    liberica_version="$(curl -fsSL "$tool_versions_url" | awk '$1 == "java" { sub(/^liberica-/, "", $2); print $2 }')"; \
+    test -n "$liberica_version" || { echo "could not parse liberica version from $tool_versions_url" >&2; exit 1; }; \
+    url="https://download.bell-sw.com/java/${liberica_version}/bellsoft-jdk${liberica_version}-linux-${liberica_arch}.tar.gz"; \
     curl -fsSL "$url" -o /tmp/jdk.tar.gz; \
-    mkdir -p /opt/jdk-21; \
-    tar -xzf /tmp/jdk.tar.gz -C /opt/jdk-21 --strip-components=1; \
+    mkdir -p /opt/jdk; \
+    tar -xzf /tmp/jdk.tar.gz -C /opt/jdk --strip-components=1; \
     rm /tmp/jdk.tar.gz; \
+    echo "$liberica_version" > /opt/jdk/.liberica-version; \
     java -version
 
 RUN mkdir -p /app/code /app/data
 WORKDIR /app/code
 
-COPY --from=builder /tmp/urlaubsverwaltung.jar /app/code/urlaubsverwaltung.jar
-COPY --from=builder /build/.uv-commit /app/code/.uv-commit
-COPY cloudron/start.sh /app/code/start.sh
-RUN chmod +x /app/code/start.sh
+RUN curl -fsSL "https://github.com/urlaubsverwaltung/urlaubsverwaltung/releases/download/urlaubsverwaltung-${URLAUBSVERWALTUNG_VERSION}/urlaubsverwaltung-${URLAUBSVERWALTUNG_VERSION}.jar" \
+      -o /app/code/urlaubsverwaltung.jar \
+ && echo "${URLAUBSVERWALTUNG_VERSION}" > /app/code/.urlaubsverwaltung-version
 
-EXPOSE 8080
+COPY start.sh /app/pkg/start.sh
+RUN chmod +x /app/pkg/start.sh
 
-CMD ["/app/code/start.sh"]
+CMD ["/app/pkg/start.sh"]
